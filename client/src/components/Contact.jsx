@@ -31,7 +31,6 @@ export default function Contact({listing}) {
         </Link>
       </div>
     )
-
     }
     </>
   )

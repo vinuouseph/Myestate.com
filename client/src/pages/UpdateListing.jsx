@@ -22,6 +22,8 @@ export default function CreateListing() {
         offer: false,
         parking: false,
         furnished: false,
+        latitude: 0,
+        longitude: 0,
     });
     const [imageUploadError, setImageUploadError] = useState(false);
     const [uploading, setUploading] = useState(false);
@@ -152,6 +154,26 @@ export default function CreateListing() {
                 <input onChange={handleChange} value={formData.name} type="text" placeholder='Name' className='border p-3 rounded-lg' id='name' maxLength='62' minLength='10' required/>
                 <textarea onChange={handleChange} value={formData.description} type="text" placeholder='Description' className='border p-3 rounded-lg' id='description' required/>
                 <input onChange={handleChange} value={formData.address} type="text" placeholder='Address' className='border p-3 rounded-lg' id='address' required/>
+                <div className="flex space-x-6 justify-start mb-6">
+                    <div>
+                        <p className="text-lg font-semibold ">Latitude</p>
+                        <input type="number" step="0.000000000000001" id="latitude" value={formData.latitude} onChange={handleChange} required min="-90" max="90" className="w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition duration-150 ease-in-out focus:bg-white focus:text-gray-700 focus:border-slate-600 text-center"/>
+                    </div>
+                    <div className="">
+              <p className="text-lg font-semibold">Longitude</p>
+              <input
+                type="number"
+                step="0.000000000000001"
+                id="longitude"
+                value={formData.longitude}
+                onChange={handleChange}
+                required
+                min="-180"
+                max="180"
+                className="w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition duration-150 ease-in-out focus:bg-white focus:text-gray-700 focus:border-slate-600 text-center"
+              />
+            </div>
+            </div>
                 <div className='flex gap-6 flex-wrap'>
                 <div className='flex gap-2'>
                     <input type="checkbox" id='sale' className='w-5' onChange={handleChange} checked={formData.type === 'sale'}/>

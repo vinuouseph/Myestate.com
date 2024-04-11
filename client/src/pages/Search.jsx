@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import ListingItem from '../components/ListingItem';
+import Spinner from '../components/Spinner';
 
 export default function Search() {
     const navigate = useNavigate();
@@ -178,7 +179,7 @@ export default function Search() {
                     <p className='text-xl text-slate-700'>No listing found!</p>
                 )}
                 {loading && (
-                    <p className='text-xl text-slate-700 text-center w-full'>Loading...</p>
+                    <p className='text-xl text-slate-700 text-center w-full'><Spinner/></p>
                 )}
                 {
                     !loading && listings && listings.map((listing) => <ListingItem key={listing._id} listing={listing}/>

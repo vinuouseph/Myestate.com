@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation } from 'swiper/modules';
+import { Navigation, Autoplay } from 'swiper/modules';
 import SwiperCore from 'swiper';
 import 'swiper/css/bundle';
 import ListingItem from '../components/ListingItem';
@@ -10,7 +10,7 @@ export default function Home() {
   const [offerListings, setOfferListings] = useState([]);
   const [saleListings, setSaleListings] = useState([]);
   const [rentListings, setRentListings] = useState([]);
-  SwiperCore.use([Navigation]);
+  SwiperCore.use([Navigation, Autoplay]);
   console.log(offerListings);
   useEffect(() => {
     const fetchOfferListings = async () => {
@@ -66,9 +66,10 @@ export default function Home() {
           Let's get started...
         </Link>
       </div>
+      
 
       {/* swiper */}
-      <Swiper navigation>
+      <Swiper navigation autoplay={{ delay: 2500}}>
         {offerListings &&
           offerListings.length > 0 &&
           offerListings.map((listing) => (
