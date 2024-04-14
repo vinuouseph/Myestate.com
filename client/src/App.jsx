@@ -11,6 +11,7 @@ import UpdateListing from './pages/UpdateListing';
 import Listing from './pages/listing';
 import Search from './pages/Search';
 import Wishlist from './pages/Wishlist';
+import Prediction from './pages/Prediction';
 
 export default function App() {
   return <BrowserRouter>
@@ -27,6 +28,7 @@ export default function App() {
    <Route path="/wishlist" element={<Wishlist />} />
    <Route path="/create-listing" element={<CreateListing />} />
    <Route path="/update-listing/:listingId" element={<UpdateListing />} />
+   <Route path="/prediction" element={<Prediction />} />
    </Route>
   </Routes>
   </BrowserRouter>;
