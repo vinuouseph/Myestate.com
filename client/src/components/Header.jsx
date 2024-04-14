@@ -43,6 +43,9 @@ export default function Header() {
         <Link to='/'>
         <li className='text-slate-700 hover:underline'>Home</li>
         </Link>
+        <Link to='/wishlist'>
+        <li className='text-slate-700 hover:underline'>wishlist</li>
+        </Link>
         <Link to='/about'>
         <li className='text-slate-700 hover:underline'>About</li>
         </Link>
