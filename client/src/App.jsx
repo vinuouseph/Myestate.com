@@ -10,6 +10,7 @@ import CreateListing from './pages/CreateListing';
 import UpdateListing from './pages/UpdateListing';
 import Listing from './pages/listing';
 import Search from './pages/Search';
+import Prediction from './pages/Prediction';
 
 export default function App() {
   return <BrowserRouter>
@@ -20,7 +21,8 @@ export default function App() {
    <Route path="/sign-up" element={<Signup />} />
    <Route path="/about" element={<About />} />
    <Route path="/search" element={<Search />} />
-   <Route path="/listing/:listingId" element={<Listing />} />f
+   <Route path="/listing/:listingId" element={<Listing />} />
+   <Route path="/prediction" element={<Prediction />} />
    <Route element={<PrivateRoute />} >
    <Route path="/profile" element={<Profile />} />
    <Route path="/create-listing" element={<CreateListing />} />
