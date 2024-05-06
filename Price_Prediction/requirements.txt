@@ -1,0 +1,5 @@
+pip install numpy
+pip install geopy
+pip install scikit-learn==1.2.2
+pip install flask
+pip install flask-cors

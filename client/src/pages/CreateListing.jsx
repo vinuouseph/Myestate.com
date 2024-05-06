@@ -107,12 +107,54 @@ export default function CreateListing() {
 
    const handleSubmit = async (e) => {
     e.preventDefault();
-    try{
-        if(formData.imageUrls.length < 1) return setError('Upload atleast one image')
-        if(+formData.regularPrice < +formData.discountPrice) return setError('Discount price must be lower than regular price')
+    try {
+        if (formData.imageUrls.length < 1) return setError('Upload atleast one image');
+        if (+formData.regularPrice < +formData.discountPrice) return setError('Discount price must be lower than regular price');
         setLoading(true);
         setError(false);
-        const res = await fetch ('/api/listing/create', {
+
+        // Check if the listing details match any saved search
+        const searchRes = await fetch('/api/save/savedsearch', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+        });
+        const searchData = await searchRes.json();
+
+        if (searchData.length > 0) {
+            // If there are matching saved searches, get the user emails
+            const SaveData = await Promise.all(
+                searchData.map(async (search) => {
+                    const userRes = await fetch(`/api/user/${search.userRef}`);
+                    const user = await userRes.json();
+                    return { email: user.email, searchName: search.name };
+                })
+            );
+            
+            console.log('Matching data:', SaveData);
+        
+
+              // Send email to matching users
+      const sendEmailRes = await fetch('http://localhost:3000/send-savedsearches-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          listings: [formData],
+          useremail: SaveData.map(({ email }) => email).join(', '),
+          searchNames: SaveData.map(({ searchName }) => searchName).join(', '),
+        }),
+      });
+
+      if (!sendEmailRes.ok) {
+        console.error('Failed to send email');
+      }
+    }
+
+        const res = await fetch('/api/listing/create', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -120,11 +162,11 @@ export default function CreateListing() {
             body: JSON.stringify({
                 ...formData,
                 userRef: currentUser._id,
-            })
+            }),
         });
         const data = await res.json();
         setLoading(false);
-        if(data.success === false) {
+        if (data.success === false) {
             setError(data.message);
         }
         navigate(`/listing/${data._id}`);
@@ -132,7 +174,8 @@ export default function CreateListing() {
         setError(error.message);
         setLoading(false);
     }
-   }
+};
+
   return (
     <main className='p-3 max-w-4xl mx-auto'>
         <h1 className='text-3xl font-semibold text-center my-7'>Create a Listing</h1>

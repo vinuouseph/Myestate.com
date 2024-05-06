@@ -84,6 +84,8 @@ export const getListings = async (req, res, next) => {
             type = { $in: ['sale', 'rent']};
         }
         const searchTerm = req.query.searchTerm || '';
+        
+        const searchAdd = req.query.searchAdd || '';
 
         const sort = req.query.sort || 'createdAt';
 
@@ -91,6 +93,7 @@ export const getListings = async (req, res, next) => {
 
         const listings = await Listing.find({
             name: { $regex: searchTerm, $options: 'i' },
+            address: { $regex: searchAdd, $options: 'i' },
             offer,
             furnished,
             parking,
@@ -103,3 +106,4 @@ export const getListings = async (req, res, next) => {
         next(error);
     }
 }
+

@@ -2,6 +2,7 @@ import bcryptjs from 'bcryptjs';
 import User from '../models/user.model.js';
 import { errorHandler } from '../utils/error.js';
 import Listing from '../models/listing.model.js';
+import SaveSearch from '../models/saveSearch.model.js';
 
 export const test = (req, res)=>{
     res.json({
@@ -66,3 +67,32 @@ export const getUser = async (req, res, next) => {
     }
     
 }
+
+export const getUserSaveSearches = async (req, res, next) => {
+    if(req.user.id === req.params.id) {
+        try{
+            const saveSearches = await SaveSearch.find({ userRef: req.params.id });
+            res.status(200).json(saveSearches);
+        } catch(error) {
+            next(error);
+        }
+    }
+    else {
+        return next(errorHandler(401, 'You can only view your own saved search!'));
+    }
+}
+
+export const getUserByRef = async (req, res, next) => {
+    try {
+        const userRef = req.params.userRef;
+        console.log('User Ref:', userRef);
+        const user = await User.findOne({ _id: userRef });
+        console.log('User:', user);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        res.status(200).json(user);
+    } catch (error) {
+        next(error);
+    }
+};

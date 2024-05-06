@@ -5,7 +5,9 @@ import { app } from '../firebase';
 import userSlice, { updateUserStart, updateUserSuccess, updateUserFailure, signOutUserStart, deleteUserFailure, deleteUserStart, deleteUserSuccess } from "../redux/user/userSlice";
 import { useDispatch } from "react-redux";
 import { Link } from 'react-router-dom';
-import Listing from "../../../api/models/listing.model";
+import SaveSearch from "../components/SaveSearch.jsx";
+import Spinner from "../components/Spinner";
+
 export default function Profile() {
   const fileRef = useRef(null);
   const {currentUser, loading, error} = useSelector((state) => state.user);
@@ -16,11 +18,14 @@ export default function Profile() {
   const [updateSuccess, setUpdateSuccess] = useState(false);
   const [showListingsError, setShowListingsError] = useState(false);
   const [userListings, setUserListings] = useState([]);
+  const [showListings, setShowListings] = useState(true);
+  const [showSavedSearches, setShowSavedSearches] = useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
     if(file) {
       handleFileUpload();
     }
+    handleShowListings();
   }, [file]);
   const handleFileUpload = () => {
     const storage = getStorage(app);
@@ -105,19 +110,31 @@ export default function Profile() {
    }
 
    const handleShowListings = async () => {
-    try{
+    try {
       setShowListingsError(false);
+      setShowSavedSearches(false);
+      setShowListings(true);
       const res = await fetch(`/api/user/listings/${currentUser._id}`);
       const data = await res.json();
-      if(data.success === false){
+      if (data.success === false) {
         setShowListingsError(true);
         return;
       }
       setUserListings(data);
-    } catch(error) {
+    } catch (error) {
       setShowListingsError(true);
     }
-   }
+  };
+
+   const handleShowSavedSearches = async () => {
+    try {
+      setShowListingsError(false);
+      setShowListings(false);
+      setShowSavedSearches(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
    const handleListingDelete = async (ListingId) => {
     try{
@@ -135,7 +152,8 @@ export default function Profile() {
     }
    }
   return (
-    <div className='p-3 max-w-lg mx-auto'>
+    <div className="flex mx-auto">
+    <div className='flex flex-col ml-10 p-6 w-2/6 mx-auto border-r-4 border-gray-300'>
     <h1 className='text-3xl font-semibold text-center my-7'>Profile</h1>
     <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
       <input onChange={(e)=>setFile(e.target.files[0])} type="file" ref={fileRef} hidden accept='image/*'/>
@@ -157,7 +175,7 @@ export default function Profile() {
       <input type="email" placeholder='email' defaultValue={currentUser.email} id='email' className='border p-3 rounded-lg' onChange={handleChange}/>
       <input type="password" placeholder='password' id='password' className='border p-3 rounded-lg' onChange={handleChange} />
       <button disabled={loading} className='bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80'>
-        {loading ? 'Loading...' : 'Update'}
+        {loading ? <Spinner/> : 'Update'}
       </button>
       <Link className='bg-green-700 text-white p-3 rounded-lg uppercase text-center hover:opacity-95' to={"/create-listing"}>Create Listing</Link>
     </form>
@@ -167,21 +185,49 @@ export default function Profile() {
     </div>
     <p className="text-red-700 mt-5">{error ? error : ''}</p>
     <p className="text-green-700 mt-5">{updateSuccess ? 'Successfully updated profile!' : ''}</p>
-    <button onClick={handleShowListings} className="text-green-700 w-full">Show Listings</button>
+    </div>
+  
+    <div className="flex flex-col mx-auto my-10">
+    <div className="flex gap-6 flex-wrap items-center justify-center">
+    <button onClick={handleShowListings} className="bg-green-700 text-white p-2 rounded-md ">Show Listings</button>
+    <button onClick={handleShowSavedSearches} className="bg-green-700 text-white p-2 rounded-md">
+        Show Saved Searches
+      </button>
+    </div>
     <p className="text-red-700 mt-5">{showListingsError ? 'Error showing listings' : ''}</p>
-    {userListings && userListings.length > 0 &&
-    <div className="flex flex-col gap-4">
-      <h1 className="text-center mt-7 text-2xl font-semibold">Your Listings</h1>
-    {userListings.map((listing) => (<div key={listing._id} className="border rounded-lg p-3 flex justify-between items-center gap-4">
-        <Link to={`/listing/${listing._id}`}><img src={listing.imageUrls[0]} alt="listing cover" className="h-16 w-16 object-contain" /></Link>
-        <Link className="text-slate-700 font-semibold hover:underline truncate" to={`/listing/${listing._id}`}><p>{listing.name}</p></Link>
-        <div className="flex flex-col items-center">
-          <button onClick={()=>handleListingDelete(listing._id)} className="text-red-700 uppercase">Delete</button>
-          <Link to={`/update-listing/${listing._id}`}><button className="text-green-700 uppercase">Edit</button></Link>
-        </div>
+    {showListings && ( userListings.length > 0 ? (
+      <div className="flex flex-col gap-4">
+        <h1 className="text-center mt-7 text-2xl font-semibold">Your Listings</h1>
+        {userListings.map((listing) => (
+          <div key={listing._id} className="border-4 border-blue-200 rounded-lg p-3 flex justify-between items-center gap-4 w-96">
+            <Link to={`/listing/${listing._id}`}>
+              <img src={listing.imageUrls[0]} alt="listing cover" className="h-16 w-16 object-contain" />
+            </Link>
+            <Link className="text-slate-700 font-semibold hover:underline truncate" to={`/listing/${listing._id}`}>
+              <p>{listing.name}</p>
+            </Link>
+            <div className="flex flex-col items-center">
+              <button onClick={() => handleListingDelete(listing._id)} className="text-red-700 uppercase hover:underline">
+                Delete
+              </button>
+              <Link to={`/update-listing/${listing._id}`}>
+                <button className="text-green-700 uppercase hover:underline">Edit</button>
+              </Link>
+            </div>
+          </div>
+        ))}
       </div>
-    )) }
-    </div>}
+    ) : (
+      <div className="flex flex-col gap-4">
+        <h1 className="text-center mt-7 text-2xl font-semibold">Your Listings</h1>
+    <p className="text-center mt-4">You do not have any listings</p>
+      </div>
+    )
+    )}
+
+    {showSavedSearches && <SaveSearch />}
+    </div>
+    
     </div>
   );
 }

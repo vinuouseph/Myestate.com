@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import Spinner from "../components/Spinner";
+import { Link } from "react-router-dom";
 import Listing from "./listing";
 
 const Wishlist = () => {
@@ -10,16 +11,14 @@ const Wishlist = () => {
   const [error, setError] = useState(null);
   const { currentUser } = useSelector((state) => state.user);
 
+
   useEffect(() => {
     const fetchWishlists = async () => {
       try {
-        const res = await axios.get("/api/wishlist", {
-          headers: {
-            Authorization: `Bearer ${currentUser.accessToken}`,
-          },
-        });
-        console.log("Response data:", res.data); // Log the response data
-        setWishlists(res.data);
+        const res = await fetch('/api/wishlist/');
+        const data = await res.json();
+        console.log("Response data:", data); // Log the response data
+        setWishlists(data);
       } catch (err) {
         console.error("Error fetching wishlists:", err); // Log the error
         setError("Failed to fetch wishlists.");
@@ -65,7 +64,7 @@ const Wishlist = () => {
   }
 
   return (
-    <div className="container mx-auto px-4">
+    <div className="mx-auto pl-20 bg-white">
       <h1 className="text-3xl font-semibold mb-4">Wishlist</h1>
       <div className="flex flex-wrap">
         {wishlists.length === 0 ? (
@@ -83,11 +82,14 @@ const Wishlist = () => {
                 >
                   Remove
                 </button>
+                <Link to={`/listing/${wishlist.listingID}`}>
                 <button
                   className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                 >
                   View
                 </button>
+                </Link>
+                
               </div>
             </div>
           ))
