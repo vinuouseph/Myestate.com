@@ -14,8 +14,8 @@
     import dotenv from 'dotenv';
     dotenv.config();
     
-    
-    mongoose.connect(process.env.MONGO).then(() => {
+    const path = require('path');
+    mongoose.connect(process.env.ATLAS_URI).then(() => {
         console.log('Connected to MongoDB!');
     })
         .catch((err) => {
@@ -211,3 +211,8 @@
             message
         });
     });
+
+app.use(express.static("../client/build"));
+app.get("*", (req, res) => {
+      res.sendFile(path.resolve(__dirname, "../client", "build", "index.html"))
+});
