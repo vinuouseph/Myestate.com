@@ -22,19 +22,19 @@ jobs:
       - name: Install npm packages - server
         run: |
           npm install
-          npm run build
+          npm run dev
       
       - name: Install npm packages, build then copy files - client
         run: |
           cd client
           npm install
-          npm run build
+          npm run dev
             
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
           name: mern-app
-          path: mern/server
+          path: api
 
   deploy:
     runs-on: ubuntu-latest
