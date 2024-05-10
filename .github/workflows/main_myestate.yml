@@ -21,6 +21,12 @@ jobs:
         with:
           node-version: '20.x'
 
+      - name: Install npm packages, build  - server
+        run: |
+          npm install
+          npm run dev
+          npm run test --if-present
+          
       - name: Install npm packages, build  - client
         run: |
           cd client
