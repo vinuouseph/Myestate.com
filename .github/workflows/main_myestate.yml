@@ -24,7 +24,6 @@ jobs:
       - name: Install npm packages, build  - server
         run: |
           npm install
-          npm run build
           npm run test --if-present
           
       - name: Install npm packages, build  - client
