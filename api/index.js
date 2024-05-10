@@ -14,7 +14,7 @@
     import dotenv from 'dotenv';
     dotenv.config();
     
-    const path = require('path');
+    import path from 'path';
     mongoose.connect(process.env.ATLAS_URI).then(() => {
         console.log('Connected to MongoDB!');
     })
