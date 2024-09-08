@@ -141,4 +141,54 @@
 
 ## Screenshots
 
-*Add relevant screenshots of your application here.*
+## Screenshots
+![Login Screenshot 1](./assets/login_1.jpeg)
+*Login Page of MyEstate.com*
+
+![Login Screenshot 1](./assets/login_2.jpeg)
+*Login Page of MyEstate.com*
+
+![Homepage Screenshot](./assets/home_page_1.jpeg)
+*Homepage of MyEstate.com*
+
+![Property Listing Screenshot](./assets/home_page_2.jpeg)
+*Property listing page displaying available properties*
+
+![Create a Listing Screenshot 1](./assets/create_a_listing.jpeg)
+*Create a Listing Page of MyEstate.com*
+
+![Update a Listing Screenshot 1](./assets/update_a_listing.jpeg)
+*Update a Listing Page of MyEstate.com*
+
+![Profile Screenshot 1](./assets/profile.jpeg)
+*Profile Page of MyEstate.com*
+
+![Price Prediction Website Screenshot](./assets/price_prediction_1.jpeg)
+*Price Prediction page of MyEstate.com*
+
+![Price Prediction Website Screenshot 2](./assets/price_prediction_2.jpeg)
+*All features of Price Prediction model of MyEstate.com*
+
+![Saved Search Screenshot 1](./assets/saved_search_1.jpeg)
+*Saved Search feature of MyEstate.com*
+
+![Saved Search Screenshot 2](./assets/saved_search_2.jpeg)
+*Saved Searches page of MyEstate.com*
+
+![Property Screenshot](./assets/property_1.jpeg)
+*Property Page of MyEstate.com*
+
+![Map Screenshot](./assets/property_2.jpeg)
+*Map Feature of MyEstate.com*
+
+![Contact Landlord Screenshot 1](./assets/contact_landlord.jpeg)
+*Contact Landlord Feature of MyEstate.com*
+
+![Wishlist Screenshot 1](./assets/wishlist.jpeg)
+*Wishlist Feature of MyEstate.com*
+
+![Review and Rating Screenshot 1](./assets/review_and_rating.jpeg)
+*Review and Rating Feature of MyEstate.com*
+
+![Share Screenshot 1](./assets/share.jpeg)
+*Share Feature of MyEstate.com*
